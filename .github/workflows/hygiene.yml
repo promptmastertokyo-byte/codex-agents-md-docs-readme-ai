@@ -1,0 +1,15 @@
+name: Repository Hygiene
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Run verification
+        run: ./scripts/verify.sh

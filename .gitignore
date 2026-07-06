@@ -1,0 +1,15 @@
+.DS_Store
+
+# Local scratch space
+work/**
+!work/.gitkeep
+
+# User-facing generated deliverables
+outputs/**
+!outputs/.gitkeep
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
