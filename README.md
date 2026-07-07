@@ -18,6 +18,7 @@ For humans, start with:
 - `docs/development/github.md`
 - `docs/development/verification.md`
 - `docs/development/security.md`
+- `docs/ai/github-brain.md`
 
 ## Repository Layout
 
@@ -29,6 +30,8 @@ For humans, start with:
 │   ├── index.md              # Documentation map
 │   ├── ai/                   # AI/Codex-specific operating notes
 │   └── development/          # Human development and operations docs
+├── templates/
+│   └── github-brain/         # Reusable operational-memory repo template
 ├── scripts/
 │   └── verify.sh             # Local hygiene checks
 ├── work/                     # Local scratch space, ignored by Git
@@ -44,3 +47,5 @@ For humans, start with:
 - Make verification easy to run locally and in CI.
 - Avoid storing secrets or machine-specific state in the repository.
 - Prefer simple conventions that can be copied into new repositories.
+- Treat GitHub as operational memory for AI agents: keep durable lessons in
+  versioned docs, and promote only reusable knowledge from project work.

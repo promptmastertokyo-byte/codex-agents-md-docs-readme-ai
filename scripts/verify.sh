@@ -12,10 +12,19 @@ README.md
 docs/index.md
 docs/ai/codex-ops.md
 docs/ai/context-budget.md
+docs/ai/github-brain.md
 docs/ai/mcp.md
 docs/development/github.md
 docs/development/security.md
 docs/development/verification.md
+templates/github-brain/AGENTS.md
+templates/github-brain/README.md
+templates/github-brain/docs/index.md
+templates/github-brain/docs/learnings/index.md
+templates/github-brain/docs/setup/index.md
+templates/github-brain/docs/workflow/index.md
+templates/github-brain/scripts/verify.sh
+templates/github-brain/templates/review-request.md
 "
 
 for file in $required_files; do
