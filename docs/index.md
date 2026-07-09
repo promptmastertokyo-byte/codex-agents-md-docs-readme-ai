@@ -20,8 +20,9 @@ Use this page as the map for the repository.
 ## Templates
 
 - `templates/github-brain/` - reusable skeleton for a self-running AI memory repo
-- `templates/blog-post.md` - starting frontmatter for a new blog draft
-- `blog/style-guide.md` - blog tone and structure reference
+- `templates/blog-post.md` - full article template for a new blog draft
+- `templates/blog-specialized-repo/` - reusable skeleton for a blog-only repo
+- `blog/style-guide.md` - blog writing, review, publishing, and improvement guide
 
 ## Reading Order
 

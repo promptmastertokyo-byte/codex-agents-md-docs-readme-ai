@@ -21,6 +21,15 @@ docs/development/security.md
 docs/development/verification.md
 blog/style-guide.md
 templates/blog-post.md
+templates/blog-specialized-repo/AGENTS.md
+templates/blog-specialized-repo/README.md
+templates/blog-specialized-repo/blog/style-guide.md
+templates/blog-specialized-repo/docs/measurement.md
+templates/blog-specialized-repo/docs/publishing.md
+templates/blog-specialized-repo/scripts/verify.sh
+templates/blog-specialized-repo/templates/blog-post.md
+templates/blog-specialized-repo/templates/improvement-report.md
+templates/blog-specialized-repo/templates/review-report.md
 templates/github-brain/AGENTS.md
 templates/github-brain/README.md
 templates/github-brain/docs/index.md
