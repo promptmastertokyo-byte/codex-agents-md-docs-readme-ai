@@ -19,6 +19,7 @@ docs/development/github.md
 docs/development/multi-device-workflow.md
 docs/development/security.md
 docs/development/verification.md
+blog/style-guide.md
 templates/blog-post.md
 templates/github-brain/AGENTS.md
 templates/github-brain/README.md
