@@ -4,33 +4,49 @@
 Reads WP_SITE_URL, WP_USERNAME, and WP_APP_PASSWORD from the environment.
 Always creates the post with status "draft" -- publishing is a manual
 step the operator takes in wp-admin.
+
+The Markdown body is converted to HTML before sending (the WordPress REST
+API expects HTML in `content`). Requires the `markdown` package:
+
+    pip install markdown
 """
 import base64
 import json
 import os
+import re
 import sys
 import urllib.error
 import urllib.request
+
+try:
+    import markdown as md
+except ImportError:
+    md = None
 
 
 def parse_frontmatter(text):
     lines = text.splitlines()
     if not lines or lines[0].strip() != "---":
         raise ValueError("draft is missing the opening '---' frontmatter delimiter")
-    try:
-        end = lines[1:].index("---") + 1
-    except ValueError:
+    end = None
+    for i, line in enumerate(lines[1:], start=1):
+        if line.strip() == "---":
+            end = i
+            break
+    if end is None:
         raise ValueError("draft is missing the closing '---' frontmatter delimiter")
 
-    title = None
+    meta = {}
     for line in lines[1:end]:
-        if line.startswith("title:"):
-            title = line[len("title:"):].strip()
-    if not title:
+        m = re.match(r"^(title|description|slug):\s*(.+)$", line)
+        if m:
+            meta[m.group(1)] = m.group(2).strip()
+    if "title" not in meta:
         raise ValueError("frontmatter is missing a 'title:' field")
 
-    body = "\n".join(lines[end + 1 :]).strip() + "\n"
-    return title, body
+    body = "\n".join(lines[end + 1:]).strip() + "\n"
+    body = re.sub(r"^#\s+" + re.escape(meta["title"]) + r"\s*\n+", "", body)
+    return meta, body
 
 
 def main():
@@ -48,9 +64,22 @@ def main():
         )
 
     with open(draft_path, encoding="utf-8") as f:
-        title, body = parse_frontmatter(f.read())
+        meta, body = parse_frontmatter(f.read())
 
-    payload = json.dumps({"title": title, "content": body, "status": "draft"}).encode()
+    if md is None:
+        sys.exit(
+            "The 'markdown' package is required to convert the draft to HTML "
+            "(WordPress expects HTML content). Install it with: pip install markdown"
+        )
+    html = md.markdown(body, extensions=["tables", "fenced_code"])
+
+    post = {"title": meta["title"], "content": html, "status": "draft"}
+    if "slug" in meta:
+        post["slug"] = meta["slug"]
+    if "description" in meta:
+        post["excerpt"] = meta["description"]
+
+    payload = json.dumps(post).encode()
     endpoint = site_url.rstrip("/") + "/wp-json/wp/v2/posts"
     auth = base64.b64encode(f"{username}:{app_password}".encode()).decode()
 
@@ -64,10 +93,12 @@ def main():
         },
     )
     try:
-        with urllib.request.urlopen(request) as response:
+        with urllib.request.urlopen(request, timeout=30) as response:
             result = json.load(response)
     except urllib.error.HTTPError as e:
         sys.exit(f"WordPress API error {e.code}: {e.read().decode(errors='replace')}")
+    except urllib.error.URLError as e:
+        sys.exit(f"Could not reach WordPress: {e.reason}")
 
     print(f"Created WordPress draft: {result.get('link', '(no link returned)')}")
     print("Status is 'draft' -- log into wp-admin and click Publish when ready.")

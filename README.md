@@ -34,9 +34,11 @@ For humans, start with:
 │   └── development/          # Human development and operations docs
 ├── templates/
 │   ├── github-brain/         # Reusable operational-memory repo template
-│   └── blog-post.md          # Starting frontmatter for a new blog draft
+│   ├── blog-specialized-repo/ # Reusable AI editorial blog repo template
+│   └── blog-post.md          # Full article template for a new blog draft
 ├── blog/
-│   └── drafts/                # Blog post drafts, reviewed via pull request
+│   ├── drafts/                # Blog post drafts, reviewed via pull request
+│   └── style-guide.md         # Blog writing, review, and improvement guide
 ├── scripts/
 │   ├── verify.sh             # Local hygiene checks
 │   └── publish-wordpress.py  # Push a reviewed draft to WordPress as a draft post
@@ -55,3 +57,5 @@ For humans, start with:
 - Prefer simple conventions that can be copied into new repositories.
 - Treat GitHub as operational memory for AI agents: keep durable lessons in
   versioned docs, and promote only reusable knowledge from project work.
+- For blog work, use the loop: ideas -> briefs -> drafts -> reviews ->
+  publish -> metrics -> improvements -> playbook.

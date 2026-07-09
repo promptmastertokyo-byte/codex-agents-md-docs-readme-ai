@@ -20,15 +20,8 @@ docs/development/multi-device-workflow.md
 docs/development/security.md
 docs/development/verification.md
 blog/style-guide.md
+scripts/new-post.sh
 templates/blog-post.md
-templates/github-brain/AGENTS.md
-templates/github-brain/README.md
-templates/github-brain/docs/index.md
-templates/github-brain/docs/learnings/index.md
-templates/github-brain/docs/setup/index.md
-templates/github-brain/docs/workflow/index.md
-templates/github-brain/scripts/verify.sh
-templates/github-brain/templates/review-request.md
 "
 
 for file in $required_files; do
@@ -41,7 +34,7 @@ agent_lines=$(wc -l < AGENTS.md | tr -d ' ')
 # Note: this is a last-resort net for Markdown only.
 # Primary secret protection is GitHub secret scanning / dedicated tools.
 if grep -rEn --include='*.md' --exclude-dir=.git \
-  '(api[_-]?key|token|secret|password)[=:] ?[A-Za-z0-9_./+=-]{16,}' . >&2; then
+  '(api[_-]?key|token|secret|password)[=:][[:space:]]*['\''"]?[A-Za-z0-9_./+=-]{16,}' . >&2; then
   fail "possible secret found in markdown"
 fi
 
@@ -54,6 +47,14 @@ for draft in blog/drafts/*.md; do
   [ -e "$draft" ] || continue
   [ "$(head -n 1 "$draft")" = "---" ] || fail "blog draft missing frontmatter: $draft"
   grep -q '^title:' "$draft" || fail "blog draft missing 'title:' in frontmatter: $draft"
+  grep -q '^description:' "$draft" || fail "blog draft missing 'description:' in frontmatter: $draft"
+  grep -q '^slug:' "$draft" || fail "blog draft missing 'slug:' in frontmatter: $draft"
+  if grep -q '{{VERIFY_DATE}}' "$draft"; then
+    fail "blog draft still has VERIFY_DATE placeholder: $draft"
+  fi
 done
+
+(cd templates/blog-specialized-repo && sh scripts/verify.sh)
+(cd templates/github-brain && sh scripts/verify.sh)
 
 printf '%s\n' "verify: ok"
