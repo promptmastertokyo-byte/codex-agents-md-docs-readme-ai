@@ -12,8 +12,12 @@ README.md
 blog/style-guide.md
 docs/publishing.md
 docs/measurement.md
+docs/playbook.md
+templates/idea-research-request.md
+templates/article-brief.md
 templates/blog-post.md
 templates/review-report.md
+templates/content-calendar.md
 templates/improvement-report.md
 "
 
