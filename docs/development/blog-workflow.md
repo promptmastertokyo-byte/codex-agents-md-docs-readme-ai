@@ -7,6 +7,7 @@ a deliberate manual step, not automated.
 ## Directory Layout
 
 - `blog/drafts/` - one Markdown file per post
+- `blog/style-guide.md` - tone and structure reference distilled from past articles
 - `templates/blog-post.md` - starting frontmatter for a new draft
 - `scripts/publish-wordpress.py` - pushes a draft to WordPress as a draft post
 

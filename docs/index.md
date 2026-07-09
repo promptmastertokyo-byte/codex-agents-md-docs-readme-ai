@@ -21,6 +21,7 @@ Use this page as the map for the repository.
 
 - `templates/github-brain/` - reusable skeleton for a self-running AI memory repo
 - `templates/blog-post.md` - starting frontmatter for a new blog draft
+- `blog/style-guide.md` - blog tone and structure reference
 
 ## Reading Order
 
