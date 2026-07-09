@@ -14,10 +14,12 @@ docs/ai/codex-ops.md
 docs/ai/context-budget.md
 docs/ai/github-brain.md
 docs/ai/mcp.md
+docs/development/blog-workflow.md
 docs/development/github.md
 docs/development/multi-device-workflow.md
 docs/development/security.md
 docs/development/verification.md
+templates/blog-post.md
 templates/github-brain/AGENTS.md
 templates/github-brain/README.md
 templates/github-brain/docs/index.md
@@ -46,5 +48,11 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   tracked_scratch=$(git ls-files work outputs 2>/dev/null | grep -v '\.gitkeep$' || true)
   [ -z "$tracked_scratch" ] || fail "scratch/output files are tracked: $tracked_scratch"
 fi
+
+for draft in blog/drafts/*.md; do
+  [ -e "$draft" ] || continue
+  [ "$(head -n 1 "$draft")" = "---" ] || fail "blog draft missing frontmatter: $draft"
+  grep -q '^title:' "$draft" || fail "blog draft missing 'title:' in frontmatter: $draft"
+done
 
 printf '%s\n' "verify: ok"
