@@ -17,6 +17,7 @@ For humans, start with:
 - `docs/index.md`
 - `docs/development/github.md`
 - `docs/development/multi-device-workflow.md`
+- `docs/development/blog-workflow.md`
 - `docs/development/verification.md`
 - `docs/development/security.md`
 - `docs/ai/github-brain.md`
@@ -32,9 +33,13 @@ For humans, start with:
 │   ├── ai/                   # AI/Codex-specific operating notes
 │   └── development/          # Human development and operations docs
 ├── templates/
-│   └── github-brain/         # Reusable operational-memory repo template
+│   ├── github-brain/         # Reusable operational-memory repo template
+│   └── blog-post.md          # Starting frontmatter for a new blog draft
+├── blog/
+│   └── drafts/                # Blog post drafts, reviewed via pull request
 ├── scripts/
-│   └── verify.sh             # Local hygiene checks
+│   ├── verify.sh             # Local hygiene checks
+│   └── publish-wordpress.py  # Push a reviewed draft to WordPress as a draft post
 ├── work/                     # Local scratch space, ignored by Git
 └── outputs/                  # Per-session deliverables handed to the user.
                               # Local only, ignored by Git. Anything worth

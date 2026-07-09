@@ -8,6 +8,7 @@ Use this page as the map for the repository.
 - `docs/development/security.md` - permissions, secrets, and dependency review
 - `docs/development/verification.md` - local and CI verification loop
 - `docs/development/multi-device-workflow.md` - working from phone and PC together
+- `docs/development/blog-workflow.md` - blog draft cycle and WordPress publishing
 
 ## AI-Facing Docs
 
@@ -19,6 +20,7 @@ Use this page as the map for the repository.
 ## Templates
 
 - `templates/github-brain/` - reusable skeleton for a self-running AI memory repo
+- `templates/blog-post.md` - starting frontmatter for a new blog draft
 
 ## Reading Order
 
