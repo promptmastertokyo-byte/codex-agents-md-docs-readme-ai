@@ -20,28 +20,8 @@ docs/development/multi-device-workflow.md
 docs/development/security.md
 docs/development/verification.md
 blog/style-guide.md
+scripts/new-post.sh
 templates/blog-post.md
-templates/blog-specialized-repo/AGENTS.md
-templates/blog-specialized-repo/README.md
-templates/blog-specialized-repo/blog/style-guide.md
-templates/blog-specialized-repo/docs/measurement.md
-templates/blog-specialized-repo/docs/playbook.md
-templates/blog-specialized-repo/docs/publishing.md
-templates/blog-specialized-repo/scripts/verify.sh
-templates/blog-specialized-repo/templates/article-brief.md
-templates/blog-specialized-repo/templates/blog-post.md
-templates/blog-specialized-repo/templates/content-calendar.md
-templates/blog-specialized-repo/templates/idea-research-request.md
-templates/blog-specialized-repo/templates/improvement-report.md
-templates/blog-specialized-repo/templates/review-report.md
-templates/github-brain/AGENTS.md
-templates/github-brain/README.md
-templates/github-brain/docs/index.md
-templates/github-brain/docs/learnings/index.md
-templates/github-brain/docs/setup/index.md
-templates/github-brain/docs/workflow/index.md
-templates/github-brain/scripts/verify.sh
-templates/github-brain/templates/review-request.md
 "
 
 for file in $required_files; do
@@ -54,7 +34,7 @@ agent_lines=$(wc -l < AGENTS.md | tr -d ' ')
 # Note: this is a last-resort net for Markdown only.
 # Primary secret protection is GitHub secret scanning / dedicated tools.
 if grep -rEn --include='*.md' --exclude-dir=.git \
-  '(api[_-]?key|token|secret|password)[=:] ?[A-Za-z0-9_./+=-]{16,}' . >&2; then
+  '(api[_-]?key|token|secret|password)[=:][[:space:]]*['\''"]?[A-Za-z0-9_./+=-]{16,}' . >&2; then
   fail "possible secret found in markdown"
 fi
 
@@ -69,6 +49,12 @@ for draft in blog/drafts/*.md; do
   grep -q '^title:' "$draft" || fail "blog draft missing 'title:' in frontmatter: $draft"
   grep -q '^description:' "$draft" || fail "blog draft missing 'description:' in frontmatter: $draft"
   grep -q '^slug:' "$draft" || fail "blog draft missing 'slug:' in frontmatter: $draft"
+  if grep -q '{{VERIFY_DATE}}' "$draft"; then
+    fail "blog draft still has VERIFY_DATE placeholder: $draft"
+  fi
 done
+
+(cd templates/blog-specialized-repo && sh scripts/verify.sh)
+(cd templates/github-brain && sh scripts/verify.sh)
 
 printf '%s\n' "verify: ok"

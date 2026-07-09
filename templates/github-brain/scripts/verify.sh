@@ -24,7 +24,7 @@ agent_lines=$(wc -l < AGENTS.md | tr -d ' ')
 [ "$agent_lines" -le 120 ] || fail "AGENTS.md is too long: ${agent_lines} lines"
 
 if grep -rEn --include='*.md' --exclude-dir=.git \
-  '(api[_-]?key|token|secret|password)[=:] ?[A-Za-z0-9_./+=-]{16,}' . >&2; then
+  '(api[_-]?key|token|secret|password)[=:][[:space:]]*['\''"]?[A-Za-z0-9_./+=-]{16,}' . >&2; then
   fail "possible secret found in markdown"
 fi
 

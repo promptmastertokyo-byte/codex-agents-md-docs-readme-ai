@@ -33,12 +33,16 @@ and are sent to WordPress by the publish script.
 
 1. **Design** - use `blog/style-guide.md` to choose the reader, search
    phrase, proof source, and article angle.
-2. **Draft** - copy `templates/blog-post.md` to `blog/drafts/<slug>.md`,
-   write the post, and keep concrete numbers, tables, FAQ, and evidence.
+2. **Draft** - create the draft with `sh scripts/new-post.sh <slug>`.
+   The script copies `templates/blog-post.md` to `blog/drafts/<slug>.md`,
+   sets the `slug:` field, and replaces `{{VERIFY_DATE}}` with today's
+   `YYYY年M月D日` date. Then write the post and keep concrete numbers,
+   tables, FAQ, and evidence.
 3. **Review** - open a pull request. Reviewers check SEO title, readability,
    practical examples, evidence, and missing edge cases.
 4. **Verify** - CI runs `./scripts/verify.sh`, which checks every file
-   under `blog/drafts/` has valid frontmatter with a `title:` field.
+   under `blog/drafts/` has valid frontmatter with `title:`,
+   `description:`, and `slug:` fields.
 5. **Fix** - address review or CI feedback with more commits on the same
    pull request.
 6. **Publish (manual, by design)** - after merge, run:
