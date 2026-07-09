@@ -14,15 +14,20 @@ a deliberate manual step, not automated.
 
 ## Draft Format
 
-Every draft needs a `title:` frontmatter field:
+Every draft needs `title:`, `description:`, and `slug:` frontmatter fields:
 
 ```markdown
 ---
 title: My Post Title
+description: One-sentence summary used as the meta description / excerpt.
+slug: my-post-slug
 ---
 
 Post body goes here.
 ```
+
+`title`, `description`, and `slug` are all required by `scripts/verify.sh`
+and are sent to WordPress by the publish script.
 
 ## Cycle
 
@@ -39,11 +44,14 @@ Post body goes here.
 6. **Publish (manual, by design)** - after merge, run:
 
    ```sh
-   WP_SITE_URL=https://example.com \
-   WP_USERNAME=your-wp-username \
-   WP_APP_PASSWORD='xxxx xxxx xxxx xxxx xxxx xxxx' \
+   set -a; . ./.env; set +a   # load credentials (never pass them inline)
    python3 scripts/publish-wordpress.py blog/drafts/<slug>.md
    ```
+
+   Requires the `markdown` package (`pip install markdown`) -- the script
+   converts the draft body to HTML because the WordPress REST API expects
+   HTML in `content`. It also sends `slug` and uses `description` as the
+   excerpt.
 
    This creates a WordPress post with status `draft` via the REST API --
    it never publishes automatically. Log into wp-admin, review the draft,

@@ -67,6 +67,8 @@ for draft in blog/drafts/*.md; do
   [ -e "$draft" ] || continue
   [ "$(head -n 1 "$draft")" = "---" ] || fail "blog draft missing frontmatter: $draft"
   grep -q '^title:' "$draft" || fail "blog draft missing 'title:' in frontmatter: $draft"
+  grep -q '^description:' "$draft" || fail "blog draft missing 'description:' in frontmatter: $draft"
+  grep -q '^slug:' "$draft" || fail "blog draft missing 'slug:' in frontmatter: $draft"
 done
 
 printf '%s\n' "verify: ok"

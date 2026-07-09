@@ -29,7 +29,8 @@ Keep it short, concrete, and enforceable. Put longer explanations in `docs/ai/`.
 - Keep docs concise and scannable.
 - Avoid duplicating the same policy across multiple files.
 - Do not commit secrets, tokens, private keys, or local machine paths that are not part of the project.
-- Prefer ASCII unless the document already uses another character set or the content requires it.
+- Prefer ASCII in root docs and scripts. Blog content under `blog/` and the
+  blog templates are written in Japanese by design.
 - Add comments only when they explain non-obvious intent.
 
 ## Verification
