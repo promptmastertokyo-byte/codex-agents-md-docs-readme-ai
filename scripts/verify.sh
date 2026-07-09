@@ -15,6 +15,7 @@ docs/ai/context-budget.md
 docs/ai/github-brain.md
 docs/ai/mcp.md
 docs/development/github.md
+docs/development/multi-device-workflow.md
 docs/development/security.md
 docs/development/verification.md
 templates/github-brain/AGENTS.md

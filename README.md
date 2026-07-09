@@ -16,6 +16,7 @@ For humans, start with:
 
 - `docs/index.md`
 - `docs/development/github.md`
+- `docs/development/multi-device-workflow.md`
 - `docs/development/verification.md`
 - `docs/development/security.md`
 - `docs/ai/github-brain.md`

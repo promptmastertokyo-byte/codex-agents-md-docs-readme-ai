@@ -7,6 +7,7 @@ Use this page as the map for the repository.
 - `docs/development/github.md` - branch, pull request, CI, and backup policy
 - `docs/development/security.md` - permissions, secrets, and dependency review
 - `docs/development/verification.md` - local and CI verification loop
+- `docs/development/multi-device-workflow.md` - working from phone and PC together
 
 ## AI-Facing Docs
 
