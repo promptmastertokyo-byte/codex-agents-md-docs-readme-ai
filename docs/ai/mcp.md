@@ -2,8 +2,7 @@
 
 This repository does not currently define project-specific MCP servers.
 
-Use project MCP configuration only when it provides a clear benefit that cannot
-be handled by the default Codex environment.
+Use project MCP configuration only when it provides a clear benefit that cannot be handled by the default Codex environment.
 
 ## Add an MCP Server When
 
@@ -23,11 +22,34 @@ be handled by the default Codex environment.
 
 Before adding or enabling a server, document:
 
+- Server name and owner.
+- Official documentation or source repository.
 - What data it can read.
 - What data it can write.
+- Filesystem scope.
 - Whether it can access the network.
 - What credentials it requires.
-- How to disable it.
+- How credentials are stored and revoked.
+- How to disable or remove it.
+- Human approver and review date.
 
-Record the completed review as a new section at the end of this file,
-one section per server.
+## Review Record Template
+
+```markdown
+## <Server Name>
+
+- Owner:
+- Official source:
+- Purpose:
+- Read access:
+- Write access:
+- Filesystem scope:
+- Network access:
+- Credentials:
+- Revocation method:
+- Human approver:
+- Last reviewed: YYYY-MM-DD
+- Decision: approved / rejected / limited trial
+```
+
+Record completed reviews as new sections at the end of this file, one section per server. Never include actual credentials or secret values.
