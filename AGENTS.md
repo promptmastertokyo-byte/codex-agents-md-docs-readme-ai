@@ -24,6 +24,22 @@ Keep it short, concrete, and enforceable. Put longer explanations in `docs/ai/`.
 - User-facing deliverables: `outputs/` (local only, never committed)
 - Automation and checks: `scripts/` and `.github/workflows/`
 
+## AI Team Roles
+
+| AI | 役割 | 担当ディレクトリ |
+|---|---|---|
+| Claude (chat) | 編集長: 企画判断、タイトル・構成レビュー、公開前最終レビュー、metrics分析、playbook昇格 | ideas->briefs, reviews/, improvements/, playbook |
+| Claude Code | 執筆〜WP下書き: new-post.sh実行、本文執筆・リライト、verify、PR、publish-wordpress.py実行 | drafts/, scripts/実行 |
+| Codex | インフラ: スクリプト保守、verify拡張、技術リスク検証 | scripts/, .github/ |
+| GPT | 外部視点: タイトル案の別視点、第三者レビュー | reviews/への意見のみ(直接編集なし) |
+| Gemini | リサーチ(無料枠): 公式情報・統計の裏取り | 成果物は人間がideas/briefsに転記 |
+| Grok | Xトレンド検出(無料枠): 読者の悩み収集。引用は必ず手動検証 | 成果物は人間がideas/に転記 |
+
+補足ルール:
+
+- Gemini/Grokはリポジトリに直接アクセスしない。収集->人間検証->転記の一方向。
+- briefsまではchat Claude、drafts以降はClaude Codeが境界線。
+
 ## Editing Rules
 
 - Keep docs concise and scannable.
