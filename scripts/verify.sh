@@ -13,6 +13,8 @@ warn() {
 required_files="
 AGENTS.md
 README.md
+.github/workflows/verify.yml
+.claude/commands/new-post.md
 docs/index.md
 docs/ai/codex-ops.md
 docs/ai/context-budget.md
@@ -60,6 +62,12 @@ for script in scripts/*.py; do
   [ -e "$script" ] || continue
   python3 -m py_compile "$script" || fail "python syntax check failed: $script"
 done
+
+grep -Fq 'sh scripts/new-post.sh "$ARGUMENTS"' .claude/commands/new-post.md || \
+  fail "new-post command must quote ARGUMENTS"
+
+grep -Eq '^[[:space:]]*contents:[[:space:]]*read[[:space:]]*$' .github/workflows/verify.yml || \
+  fail "verify workflow must keep contents permission read-only"
 
 for draft in blog/drafts/*.md; do
   [ -e "$draft" ] || continue
