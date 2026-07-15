@@ -1,16 +1,31 @@
-# Blog Workflow (Design -> Review -> Verify -> Fix -> Publish)
+# Damehuri Blog Workflow (Notion -> GitHub -> WordPress -> Measure)
 
-This repository manages Markdown drafts for a self-hosted WordPress blog.
-Drafts are written and reviewed here like code; publishing to WordPress is
-a deliberate manual step, not automated.
+This repository manages versioned Markdown drafts and WordPress automation for damehuri.com. Notion is the operating hub for priorities and KPI; GitHub is the source of truth for article changes and code. Publishing remains a deliberate human action.
+
+## Connected Notion Pages
+
+- [ダメフリ事業成長FB](https://app.notion.com/p/3956f1fd9481816f8eb0cb1c2f65cfe6)
+- [ダメフリ運用DB](https://app.notion.com/p/f5952f7b15c14570889b1821c0e1996b)
+- [Work運用ルール（公開承認制）](https://app.notion.com/p/39e6f1fd94818194960dc5fba7fc46cc)
+
+## Responsibility Boundary
+
+- Notion stores task status, priority, owner, deadline, hypothesis, KPI, effect-review date, article URL, and GitHub Issue/PR URL.
+- GitHub stores ideas worth preserving, briefs, article Markdown, review reports, publishing scripts, metrics snapshots, improvement history, and theme/code changes.
+- WordPress stores preview drafts and published content.
+- Work and Codex stop at `本人確認`. Only the user enables publication approval and publishes.
 
 ## Directory Layout
 
-- `blog/drafts/` - one Markdown file per post
-- `blog/style-guide.md` - writing, review, publishing, and improvement guide
-- `templates/blog-post.md` - full article template for a new draft
-- `templates/blog-specialized-repo/` - copyable template for a blog-only repository
-- `scripts/publish-wordpress.py` - pushes a draft to WordPress as a draft post
+- `blog/ideas/` - reusable article ideas and reader problems
+- `blog/briefs/` - search intent, target reader, evidence, article angle, and priority
+- `blog/drafts/` - one Markdown file per new post or rewrite
+- `blog/reviews/` - SEO, readability, YMYL, evidence, and edge-case reviews
+- `blog/published/` - published URL, date, and revision history
+- `blog/metrics/` - Search Console and Analytics snapshots
+- `blog/improvements/` - measured improvement proposals and outcomes
+- `blog/style-guide.md` - writing, review, and publishing guide
+- `scripts/publish-wordpress.py` - sends a reviewed article to WordPress as a draft
 
 ## Draft Format
 
@@ -19,62 +34,43 @@ Every draft needs `title:`, `description:`, and `slug:` frontmatter fields:
 ```markdown
 ---
 title: My Post Title
-description: One-sentence summary used as the meta description / excerpt.
+description: One-sentence meta description / excerpt.
 slug: my-post-slug
 ---
 
 Post body goes here.
 ```
 
-`title`, `description`, and `slug` are all required by `scripts/verify.sh`
-and are sent to WordPress by the publish script.
+## Weekly Cycle
 
-## Cycle
-
-1. **Design** - use `blog/style-guide.md` to choose the reader, search
-   phrase, proof source, and article angle.
-2. **Draft** - create the draft with `sh scripts/new-post.sh <slug>`.
-   The script copies `templates/blog-post.md` to `blog/drafts/<slug>.md`,
-   sets the `slug:` field, and replaces `{{VERIFY_DATE}}` with today's
-   `YYYY年M月D日` date. Then write the post and keep concrete numbers,
-   tables, FAQ, and evidence.
-3. **Review** - open a pull request. Reviewers check SEO title, readability,
-   practical examples, evidence, and missing edge cases.
-4. **Verify** - CI runs `./scripts/verify.sh`, which checks every file
-   under `blog/drafts/` has valid frontmatter with `title:`,
-   `description:`, and `slug:` fields.
-5. **Fix** - address review or CI feedback with more commits on the same
-   pull request.
-6. **Publish (manual, by design)** - after merge, run:
+1. **Select in Notion** - Work checks current KPI and unfinished tasks. Initial operating limit is one new article, one rewrite, and five X drafts per week.
+2. **Design** - create or update a brief with reader, search intent, conclusion, proof source, internal links, and target KPI.
+3. **Draft** - run `sh scripts/new-post.sh <slug>` for a new article, then write to `blog/drafts/<slug>.md` using `blog/style-guide.md`.
+4. **Human facts** - use `【体験談ここ】` for personal facts or experiences that only the user can provide.
+5. **Review** - open a Pull Request and check SEO, readability, practical examples, official evidence, YMYL wording, and missing edge cases.
+6. **Verify** - run `./scripts/verify.sh`. GitHub Actions runs the same check for Pull Requests.
+7. **Approval gate** - when ready, update the matching Notion item to `本人確認`; do not enable `公開承認`.
+8. **WordPress draft** - after approval to create a draft, load `.env` locally and run:
 
    ```sh
-   set -a; . ./.env; set +a   # load credentials (never pass them inline)
+   set -a; . ./.env; set +a
    python3 scripts/publish-wordpress.py blog/drafts/<slug>.md
    ```
 
-   Requires the `markdown` package (`pip install markdown`) -- the script
-   converts the draft body to HTML because the WordPress REST API expects
-   HTML in `content`. It also sends `slug` and uses `description` as the
-   excerpt.
-
-   This creates a WordPress post with status `draft` via the REST API --
-   it never publishes automatically. Log into wp-admin, review the draft,
-   and click Publish yourself.
-7. **Measure and improve** - after 2-4 weeks, review Search Console and
-   analytics data. Improve title, intro, headings, examples, FAQ, or internal
-   links based on actual queries and reader behavior.
+   The script always sends `status: draft`; the user reviews and clicks Publish in WordPress.
+9. **Measure** - record Search Console and Analytics results after 2-4 weeks in Notion and `blog/metrics/`.
+10. **Improve** - create a measured improvement plan with hypothesis, KPI, and an eight-week judgement date.
 
 ## Credentials
 
-- `WP_SITE_URL`, `WP_USERNAME`, `WP_APP_PASSWORD` are read from the
-  environment and must never be committed.
-- Generate an Application Password in WordPress under
-  Users -> Profile -> Application Passwords.
-- Copy `.env.example` to `.env` (already git-ignored) and load it before
-  running the script, e.g. `set -a; . ./.env; set +a`.
+- `WP_SITE_URL`, `WP_USERNAME`, and `WP_APP_PASSWORD` are read from the environment and must never be committed or stored in Notion.
+- Copy `.env.example` to `.env`; the real `.env` remains ignored by Git.
+- Use a dedicated WordPress account with only the permissions required to create and edit drafts.
 
-## See Also
+## Safety Rules
 
-- `docs/development/github.md` - branch, pull request, and CI conventions
-- `docs/development/security.md` - secret handling rules
-- `docs/development/verification.md` - local and CI verification loop
+- Never fabricate experience, analytics, search queries, revenue, or credentials.
+- If current data is unavailable, create a Notion collection task instead of estimating.
+- Existing URL changes need a verified 301 redirect plan and user approval.
+- Publishing, SNS posting, deletion, plugin/theme updates, permission changes, and production merges require explicit user approval.
+

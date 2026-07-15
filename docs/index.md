@@ -4,11 +4,12 @@ Use this page as the map for the repository.
 
 ## Human-Facing Docs
 
+- `docs/development/notion-work-integration.md` - Notion, ChatGPT Work, GitHub, and approval-state mapping
+- `docs/development/blog-workflow.md` - Notion-to-GitHub article cycle and WordPress draft publishing
 - `docs/development/github.md` - branch, pull request, CI, and backup policy
 - `docs/development/security.md` - permissions, secrets, and dependency review
 - `docs/development/verification.md` - local and CI verification loop
 - `docs/development/multi-device-workflow.md` - working from phone and PC together
-- `docs/development/blog-workflow.md` - blog draft cycle and WordPress publishing
 
 ## AI-Facing Docs
 
@@ -29,8 +30,8 @@ Use this page as the map for the repository.
 For routine work:
 
 1. `AGENTS.md`
-2. The smallest relevant doc under `docs/` (skip `README.md` unless the
-   task needs project overview)
+2. The matching Notion task when priority, KPI, deadline, or approval state matters
+3. The smallest relevant doc under `docs/`
 
 For repository setup or audits:
 
@@ -41,5 +42,5 @@ For repository setup or audits:
 
 ## Adding Categories
 
-When adding a new directory under `docs/`, add exactly one line for it in
-this index. Do not duplicate its contents here.
+When adding a new directory under `docs/`, add exactly one line for it in this index. Do not duplicate its contents here.
+
