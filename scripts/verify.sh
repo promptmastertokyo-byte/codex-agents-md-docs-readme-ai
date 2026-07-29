@@ -23,6 +23,8 @@ docs/development/verification.md
 blog/style-guide.md
 scripts/new-post.sh
 templates/blog-post.md
+.github/workflows/hygiene-reusable.yml
+templates/hygiene-caller-workflow.yml
 "
 
 for file in $required_files; do

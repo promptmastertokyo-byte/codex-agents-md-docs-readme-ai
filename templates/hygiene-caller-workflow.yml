@@ -1,0 +1,22 @@
+# コピー先: <他リポジトリ>/.github/workflows/hygiene.yml
+#
+# 前提:
+# - 本リポジトリ (codex-agents-md-docs-readme-ai) の
+#   Settings → Actions → General → Access で
+#   「Accessible from repositories in the ... organization」等を有効化し、
+#   参照元リポジトリからの呼び出しを許可しておくこと（private間の共有に必須）。
+# - 参照元リポジトリに ./scripts/verify.sh が存在すること
+#   （パスが異なる場合は verify-command を上書きする）。
+
+name: Repository Hygiene
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  verify:
+    uses: promptmastertokyo-byte/codex-agents-md-docs-readme-ai/.github/workflows/hygiene-reusable.yml@main
+    with:
+      verify-command: "./scripts/verify.sh"
