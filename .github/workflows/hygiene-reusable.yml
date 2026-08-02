@@ -1,0 +1,85 @@
+name: Hygiene (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      agents-file:
+        description: 'Path to the agents file to check the line count of.'
+        required: false
+        type: string
+        default: 'AGENTS.md'
+      max-agents-lines:
+        description: 'Maximum allowed line count for agents-file.'
+        required: false
+        type: number
+        default: 150
+      verify-script:
+        description: 'Repository-specific verify script to run, if present.'
+        required: false
+        type: string
+        default: 'scripts/verify.sh'
+      scratch-dirs:
+        description: 'Space-separated directories that must not be tracked by git.'
+        required: false
+        type: string
+        default: 'work outputs'
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Check agents file line count
+        shell: sh
+        run: |
+          set -eu
+          file="${{ inputs.agents-file }}"
+          max="${{ inputs.max-agents-lines }}"
+          if [ -f "$file" ]; then
+            lines=$(wc -l < "$file" | tr -d ' ')
+            if [ "$lines" -gt "$max" ]; then
+              printf '%s\n' "hygiene: ${file} is too long: ${lines} lines" >&2
+              exit 1
+            fi
+          fi
+
+      - name: Check for possible secrets in markdown
+        shell: sh
+        run: |
+          set -eu
+          # Note: this is a last-resort net for Markdown only.
+          # Primary secret protection is GitHub secret scanning / dedicated tools.
+          if grep -rEn --include='*.md' --exclude-dir=.git \
+            '(api[_-]?key|token|secret|password)[=:][[:space:]]*['\''"]?[A-Za-z0-9_./+=-]{16,}' . >&2; then
+            printf '%s\n' "hygiene: possible secret found in markdown" >&2
+            exit 1
+          fi
+
+      - name: Check scratch/output directories are not tracked
+        shell: sh
+        run: |
+          set -eu
+          dirs="${{ inputs.scratch-dirs }}"
+          if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+            tracked=$(git ls-files $dirs 2>/dev/null | grep -v '\.gitkeep$' || true)
+            if [ -n "$tracked" ]; then
+              printf '%s\n' "hygiene: scratch/output files are tracked: $tracked" >&2
+              exit 1
+            fi
+          fi
+
+      - name: Run repository-specific verification
+        shell: sh
+        run: |
+          set -eu
+          script="${{ inputs.verify-script }}"
+          if [ -f "$script" ]; then
+            sh "$script"
+          else
+            echo "::notice::No repository-specific verify script found at ${script}; skipping."
+          fi
