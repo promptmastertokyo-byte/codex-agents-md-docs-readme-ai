@@ -15,7 +15,7 @@ Use this page as the map for the repository.
 
 - `docs/ai/codex-ops.md` - how Codex should work in this repository
 - `docs/ai/context-budget.md` - context and token efficiency rules
-- `.codex/skills/lost-token-killer/` - Codex skill for token-saving mode in long or repetitive sessions
+- `.agents/skills/lost-token-killer/` - Codex skill for token-saving mode in long or repetitive sessions
 - `docs/ai/github-brain.md` - template for GitHub as AI operational memory
 - `docs/ai/mcp.md` - MCP configuration principles
 

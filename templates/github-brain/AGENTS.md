@@ -20,6 +20,12 @@ Keep it short, concrete, and enforceable.
 - Machine setup and recovery notes go in `docs/setup/`.
 - Do not commit secrets, tokens, private keys, or `.env` contents.
 
+## Token Budget
+
+When the user says `LTK` or `節約モード`, or a session becomes long or repetitive,
+use the `lost-token-killer` skill in `.agents/skills/`: diff edits only,
+conclusion-first replies, one-line reports. Safety rules above always override it.
+
 ## Close Rule
 
 Do not close work with "reflect later." Reflect, promote, verify, then close.

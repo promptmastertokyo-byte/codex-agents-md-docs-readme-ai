@@ -8,7 +8,7 @@ fail() {
 
 required_files="
 AGENTS.md
-.codex/skills/lost-token-killer/SKILL.md
+.agents/skills/lost-token-killer/SKILL.md
 README.md
 docs/index.md
 docs/ai/codex-ops.md

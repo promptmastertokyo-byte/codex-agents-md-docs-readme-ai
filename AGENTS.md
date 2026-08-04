@@ -65,7 +65,7 @@ When personal experience is missing, insert `【体験談ここ】`; never inven
 ## Token Budget
 
 When the user says `LTK`, `節約モード`, or a session becomes long or repetitive,
-use the `lost-token-killer` skill in `.codex/skills/`: diff edits only,
+use the `lost-token-killer` skill in `.agents/skills/`: diff edits only,
 conclusion-first replies, one-line reports. Safety confirmations in this file
 always override it.
 
