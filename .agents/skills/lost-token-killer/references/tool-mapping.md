@@ -19,11 +19,30 @@
 
 ## 設置場所
 
-- 個人用: `~/.codex/skills/lost-token-killer/`
-- プロジェクト用: `<repo>/.codex/skills/lost-token-killer/`
+Codex が探索するのは次のディレクトリ。`codex-rs/core-skills/src/loader.rs` の
+`AGENTS_DIR_NAME = ".agents"` と `SKILLS_DIR_NAME = "skills"`、および
+`repo_agents_skill_roots` の実装で確認した。
+
+| スコープ | パス | 備考 |
+| --- | --- | --- |
+| プロジェクト | `<repo>/.agents/skills/` | プロジェクトルートから cwd までの各階層を探索する |
+| ユーザー | `~/.agents/skills/` | 現行の個人用パス |
+| ユーザー（旧） | `$CODEX_HOME/skills/`（既定 `~/.codex/skills/`） | 後方互換で残っているだけ。新規はここに置かない |
+| システム | `$CODEX_HOME/skills/.system/` | Codex 同梱スキルのキャッシュ。手を入れない |
+
+**`<repo>/.codex/skills/` は探索対象ではない。** `.codex/` は設定用ディレクトリで、
+ここに置いたスキルは読み込まれない。名前が似ているので取り違えやすい。
 
 チーム全員に同じ運用を効かせるならプロジェクト側に置き、リポジトリに含める。
-個人の癖として持ち歩くなら個人側に置く。両方に置くと二重管理になるので片方に寄せる。
+個人の癖として持ち歩くなら `~/.agents/skills/` に置く。両方に置くと二重管理になるので片方に寄せる。
+
+## frontmatter の制約
+
+`loader.rs` の定数より。超えるとスキルの読み込みに失敗する。
+
+- `name`: 64文字以内、小文字とハイフンのみ
+- `description`: 1024バイト以内（日本語は1文字3バイト前後になるので注意）
+- ファイル名は `SKILL.md` 固定。`agents/openai.yaml` は任意
 
 ## AGENTS.md への組み込み
 
