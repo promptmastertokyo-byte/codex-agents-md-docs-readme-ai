@@ -62,6 +62,12 @@ When personal experience is missing, insert `【体験談ここ】`; never inven
 - External publication, SNS posting, deletion, URL migration, plugin/theme updates, payments, permission changes, and production merges require explicit user approval.
 - For tax, investment, legal, medical, or other YMYL content, verify current official primary sources immediately before publication.
 
+## Token Budget
+
+When the user says `LTK`, `節約モード`, or a session becomes long or repetitive,
+follow `docs/ai/lost-token-killer.md`: diff edits only, conclusion-first replies,
+one-line reports. Safety confirmations in this file always override it.
+
 ## Verification
 
 Run:
